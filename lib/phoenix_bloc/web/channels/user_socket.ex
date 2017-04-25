@@ -3,6 +3,7 @@ defmodule PhoenixBloc.Web.UserSocket do
 
   ## Channels
   # channel "room:*", PhoenixBloc.Web.RoomChannel
+  channel "document:lobby", PhoenixBloc.Web.DocumentChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
