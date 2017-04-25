@@ -1,20 +1,9 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Document</h3>
+   <h3 class="panel-title">Editor</h3>
   </div>
-  <div class="panel-body" id="doc">
-    Content goes here
-  </div>
+  <div class="panel-body editor-container">
+    <div id="editor"># Phoenix Bloc</div>
+    </div>
 </div>
 
-<form class="form-inline">
-  <div class="form-group">
-    <label for="number">Number</label>
-    <input type="number" class="form-control" id="number" placeholder="0">
-  </div>
-  <div class="form-group">
-    <label for="operation">Operation</label>
-    <input type="text" class="form-control" id="operation" placeholder="ins">
-  </div>
-  <button type="submit" class="btn btn-primary">Do it</button>
-</form>

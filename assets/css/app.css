@@ -1,1 +1,9 @@
 /* This file is for your main application css. */
+
+#editor {
+  height: 300px;
+}
+
+.editor-container {
+  padding: 0 !important;
+}
