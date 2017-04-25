@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: mix phx.server
+    volumes:
+      - .:/app
+    ports:
+      - "4000:4000"
+
