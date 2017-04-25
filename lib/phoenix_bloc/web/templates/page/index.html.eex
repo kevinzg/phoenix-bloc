@@ -1,36 +1,20 @@
-<div class="jumbotron">
-  <h2><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h2>
-  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
-</div>
-
-<div class="row marketing">
-  <div class="col-lg-6">
-    <h4>Resources</h4>
-    <ul>
-      <li>
-        <a href="http://phoenixframework.org/docs/overview">Guides</a>
-      </li>
-      <li>
-        <a href="https://hexdocs.pm/phoenix">Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-    </ul>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Document</h3>
   </div>
-
-  <div class="col-lg-6">
-    <h4>Help</h4>
-    <ul>
-      <li>
-        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
-      </li>
-      <li>
-        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
-      </li>
-    </ul>
+  <div class="panel-body" id="doc">
+    Content goes here
   </div>
 </div>
+
+<form class="form-inline">
+  <div class="form-group">
+    <label for="number">Number</label>
+    <input type="number" class="form-control" id="number" placeholder="0">
+  </div>
+  <div class="form-group">
+    <label for="operation">Operation</label>
+    <input type="text" class="form-control" id="operation" placeholder="ins">
+  </div>
+  <button type="submit" class="btn btn-primary">Do it</button>
+</form>
