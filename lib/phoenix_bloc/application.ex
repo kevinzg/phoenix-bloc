@@ -12,6 +12,10 @@ defmodule PhoenixBloc.Application do
       supervisor(PhoenixBloc.Web.Endpoint, []),
       # Start your own worker by calling: PhoenixBloc.Worker.start_link(arg1, arg2, arg3)
       # worker(PhoenixBloc.Worker, [arg1, arg2, arg3]),
+
+      # Redix worker
+      # See http://hexdocs.pm/redix/real-world-usage.html#global-redix
+      worker(Redix, [[host: "redis"], [name: :redix]]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
