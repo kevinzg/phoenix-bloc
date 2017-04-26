@@ -1,4 +1,5 @@
 defmodule PhoenixBloc.Web.DocumentChannel do
+  alias PhoenixBloc.Bloc.BlocController
   use PhoenixBloc.Web, :channel
 
   def join("document:lobby", payload, socket) do
@@ -19,6 +20,10 @@ defmodule PhoenixBloc.Web.DocumentChannel do
   # broadcast to everyone in the current topic (document:lobby).
   def handle_in("shout", payload, socket) do
     broadcast socket, "shout", payload
+
+    %{"bloc_id" => bloc_id, "rev" => rev, "delta" => delta} = payload
+    BlocController.apply_delta(bloc_id, rev, delta)
+
     {:noreply, socket}
   end
 
