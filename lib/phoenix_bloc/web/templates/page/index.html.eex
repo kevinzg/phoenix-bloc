@@ -3,7 +3,7 @@
    <h3 class="panel-title">Editor</h3>
   </div>
   <div class="panel-body editor-container">
-    <div id="editor"># Phoenix Bloc</div>
-    </div>
+    <div id="editor" data-id="<%= @id %>" data-rev="<%= @rev %>"><%= @content %></div>
+  </div>
 </div>
 
