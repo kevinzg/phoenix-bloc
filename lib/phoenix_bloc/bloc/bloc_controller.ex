@@ -20,4 +20,9 @@ defmodule PhoenixBloc.Bloc.BlocController do
 
     {:ok, new_rev, delta}
   end
+
+  def get_deltas_from_revision(bloc_id, rev) do
+    {:ok, deltas} = Redix.command(:redix, ~w(LRANGE bloc:#{bloc_id}:deltas #{rev} -1))
+    {:ok, deltas}
+  end
 end

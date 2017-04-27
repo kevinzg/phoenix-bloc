@@ -14,9 +14,18 @@ const bloc_id = editor_div.getAttribute("data-id");
 var bloc_rev = parseInt(editor_div.getAttribute("data-rev"));
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("document:lobby", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
+let channel = socket.channel("document:lobby", {bloc_id, parent_rev: bloc_rev})
+channel.join({rev: bloc_rev})
+  .receive("ok", resp => {
+
+    resp.forEach((e) => {
+      var rev = JSON.parse(e);
+      bloc_rev = rev.rev;
+      silent = true;
+      editor.getSession().getDocument().applyDeltas([rev.delta]);
+    });
+    // console.log("Joined successfully", resp)
+  })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 channel.on('shout', (r) => {

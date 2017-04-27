@@ -3,8 +3,11 @@ defmodule PhoenixBloc.Web.DocumentChannel do
   use PhoenixBloc.Web, :channel
 
   def join("document:lobby", payload, socket) do
+    %{"parent_rev" => rev, "bloc_id" => bloc_id} = payload
+    {:ok, deltas} = BlocController.get_deltas_from_revision(bloc_id, rev)
+
     if authorized?(payload) do
-      {:ok, socket}
+      {:ok, deltas, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
