@@ -11,7 +11,7 @@ var editor = ace.edit("editor");
 var silent = false;
 const user = "user" + Math.floor((Math.random() * 1000000) + 1);
 const bloc_id = editor_div.getAttribute("data-id");
-var bloc_rev = editor_div.getAttribute("data-rev");
+var bloc_rev = parseInt(editor_div.getAttribute("data-rev"));
 
 // Now that you are connected, you can join channels with a topic:
 let channel = socket.channel("document:lobby", {})
@@ -21,9 +21,10 @@ channel.join()
 
 channel.on('shout', (r) => {
   if (r.user === user) return;
-  if (bloc_id !== r.bloc_id) console.log("errrorrr");
-  silent = true;
+
+  console.log(`Applying rev ${r.rev}`);
   bloc_rev = r.rev;
+  silent = true;
   editor.getSession().getDocument().applyDeltas([r.delta]);
 });
 
@@ -32,9 +33,9 @@ editor.on('change', (e) => {
   silent = false;
   if (old_silent) return;
 
-  channel.push('shout', {bloc_id: bloc_id, rev: bloc_rev, user, delta: e});
+  console.log(`Sending rev ${bloc_rev}`);
+  channel.push('shout', {bloc_id, parent_rev: bloc_rev, user, delta: e});
+  bloc_rev = bloc_rev + 1;
 });
 
 export default socket
-
-

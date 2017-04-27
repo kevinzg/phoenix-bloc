@@ -8,10 +8,16 @@ defmodule PhoenixBloc.Bloc.BlocController do
     end
   end
 
-  def apply_delta(bloc_id, rev, delta) do
-    {:ok, rev, content} = get_bloc(bloc_id)
-    rev_x = String.to_integer(rev) |> Kernel.+(1)
-    Redix.command!(:redix, ["HMSET", "bloc:#{bloc_id}", "rev", "#{rev_x}", "content", "#{content}"])
-    {:ok}
+  def apply_delta(%{"bloc_id" => bloc_id, "parent_rev" => parent_rev,
+    "delta" => delta}) do
+
+    new_rev = parent_rev + 1
+    new_delta = %{"rev" => new_rev, "delta" => delta}
+
+    {:ok, json_delta} = Poison.encode(new_delta)
+    Redix.command!(:redix, ["RPUSH", "bloc:#{bloc_id}:deltas", json_delta])
+    Redix.command!(:redix, ["HSET", "bloc:#{bloc_id}", "rev", new_rev])
+
+    {:ok, new_rev, delta}
   end
 end

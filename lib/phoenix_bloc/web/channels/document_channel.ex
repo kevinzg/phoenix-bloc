@@ -19,11 +19,13 @@ defmodule PhoenixBloc.Web.DocumentChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (document:lobby).
   def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+    {:ok, rev, delta} = BlocController.apply_delta(payload)
 
-    %{"bloc_id" => bloc_id, "rev" => rev, "delta" => delta} = payload
-    BlocController.apply_delta(bloc_id, rev, delta)
+    new_payload = payload
+      |> Map.put("rev", rev)
+      |> Map.put("delta", delta)
 
+    broadcast socket, "shout", new_payload
     {:noreply, socket}
   end
 
