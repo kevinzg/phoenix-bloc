@@ -7,3 +7,4 @@ editor.setTheme("ace/theme/dawn");
 editor.getSession().setMode("ace/mode/markdown");
 editor.getSession().setUseSoftTabs(true);
 editor.renderer.setShowPrintMargin(false);
+editor.$blockScrolling = Infinity

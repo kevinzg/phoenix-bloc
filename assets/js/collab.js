@@ -6,19 +6,34 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 
 socket.connect()
 
+var editor_div = document.getElementById("editor");
 var editor = ace.edit("editor");
 var silent = false;
-var user = "user" + Math.floor((Math.random() * 1000000) + 1);
+const user = "user" + Math.floor((Math.random() * 1000000) + 1);
+const bloc_id = editor_div.getAttribute("data-id");
+var bloc_rev = parseInt(editor_div.getAttribute("data-rev"));
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("document:lobby", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
+const channel_name = "document:" + bloc_id;
+let channel = socket.channel(channel_name, {bloc_id, parent_rev: bloc_rev})
+channel.join({rev: bloc_rev})
+  .receive("ok", resp => {
+
+    resp.forEach((e) => {
+      var rev = JSON.parse(e);
+      bloc_rev = rev.rev;
+      silent = true;
+      editor.getSession().getDocument().applyDeltas([rev.delta]);
+    });
+    // console.log("Joined successfully", resp)
+  })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 channel.on('shout', (r) => {
   if (r.user === user) return;
 
+  console.log(`Applying rev ${r.rev}`);
+  bloc_rev = r.rev;
   silent = true;
   editor.getSession().getDocument().applyDeltas([r.delta]);
 });
@@ -28,9 +43,9 @@ editor.on('change', (e) => {
   silent = false;
   if (old_silent) return;
 
-  channel.push('shout', {user, delta: e});
+  console.log(`Sending rev ${bloc_rev}`);
+  channel.push('shout', {bloc_id, parent_rev: bloc_rev, user, delta: e});
+  bloc_rev = bloc_rev + 1;
 });
 
 export default socket
-
-
