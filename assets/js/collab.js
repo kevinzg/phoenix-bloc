@@ -14,7 +14,8 @@ const bloc_id = editor_div.getAttribute("data-id");
 var bloc_rev = parseInt(editor_div.getAttribute("data-rev"));
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("document:lobby", {bloc_id, parent_rev: bloc_rev})
+const channel_name = "document:" + bloc_id;
+let channel = socket.channel(channel_name, {bloc_id, parent_rev: bloc_rev})
 channel.join({rev: bloc_rev})
   .receive("ok", resp => {
 

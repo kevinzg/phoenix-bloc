@@ -2,7 +2,7 @@ defmodule PhoenixBloc.Web.DocumentChannel do
   alias PhoenixBloc.Bloc.BlocController
   use PhoenixBloc.Web, :channel
 
-  def join("document:lobby", payload, socket) do
+  def join("document:" <> bloc_id, payload, socket) do
     %{"parent_rev" => rev, "bloc_id" => bloc_id} = payload
     {:ok, deltas} = BlocController.get_deltas_from_revision(bloc_id, rev)
 

@@ -14,7 +14,7 @@
   <body>
     <div class="container">
       <header class="header">
-        <h1>Phoenix Bloc</h1>
+        <h1>Phoenix Bloc <small>(<%= @id %>)</small></h1>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
